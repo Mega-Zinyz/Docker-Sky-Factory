@@ -8,6 +8,7 @@ ENV EULA=TRUE
 ENV LEVEL-NAME=Imperium
 ENV ONLINE_MODE=FALSE
 ENV ENABLE_GUI=false
+ENV JVM_OPTS="-Dlog4j2.formatMsgNoLookups=true"
 
 WORKDIR /data
 
