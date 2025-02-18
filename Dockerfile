@@ -1,5 +1,8 @@
 FROM itzg/minecraft-server:java8
 
+# Install unzip untuk memastikan kita bisa ekstrak file zip
+RUN apt-get update && apt-get install -y unzip
+
 ENV TYPE=FORGE
 ENV FORGE_VERSION=14.23.5.2855
 ENV VERSION=1.12.2
@@ -17,19 +20,18 @@ WORKDIR /data
 COPY SkyFactory-4.zip /data/SkyFactory-4.zip
 COPY Imperium.zip /data/Imperium.zip
 
-# Ekstrak file zip dan hapus file zip setelahnya
-RUN if [ ! -d "/data/mods" ]; then \
-    echo "Extracting SkyFactory 4..." && \
-    unzip /data/SkyFactory-4.zip -d /data && \
-    rm /data/SkyFactory-4.zip; \
+# Periksa apakah file ada dan ekstrak jika ada
+RUN echo "Listing files in /data" && ls /data && \
+    if [ -f "/data/SkyFactory-4.zip" ]; then \
+        echo "Extracting SkyFactory 4..." && \
+        unzip /data/SkyFactory-4.zip -d /data && \
+        rm /data/SkyFactory-4.zip; \
     fi && \
-    echo "Extracting Imperium world..." && \
-    unzip /data/Imperium.zip -d /data && \
-    rm /data/Imperium.zip; \
+    if [ -f "/data/Imperium.zip" ]; then \
+        echo "Extracting Imperium world..." && \
+        unzip /data/Imperium.zip -d /data && \
+        rm /data/Imperium.zip; \
     fi
-
-# Mengatur agar level-name di server.properties sesuai dengan nama world
-RUN sed -i 's/level-name=world/level-name=Imperium/' /data/server.properties
 
 # Set entrypoint untuk menjalankan server Minecraft
 CMD ["bash", "/start"]
