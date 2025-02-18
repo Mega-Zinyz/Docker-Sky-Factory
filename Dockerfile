@@ -9,15 +9,19 @@ ENV LEVEL-NAME=Imperium
 ENV ONLINE_MODE=FALSE
 ENV ENABLE_GUI=false
 ENV JVM_OPTS="-Dlog4j2.formatMsgNoLookups=true"
-
+    
+# Set working directory
 WORKDIR /data
 
-# Cek apakah SkyFactory sudah terinstal, jika tidak, download dan ekstrak
+# Menyalin file SkyFactory4.zip dari repo ke dalam container
+COPY SkyFactory-4.zip /data/SkyFactory-4.zip
+
+# Ekstrak file zip dan hapus file zip setelahnya
 RUN if [ ! -d "/data/mods" ]; then \
-    echo "Downloading SkyFactory 4..." && \
-    curl -o /data/skyfactory4.zip -L "https://www.curseforge.com/api/v1/mods/296062/files/3565683/download" && \
+    echo "Extracting SkyFactory 4..." && \
     unzip /data/skyfactory4.zip -d /data && \
     rm /data/skyfactory4.zip; \
     fi
 
+# Set entrypoint untuk menjalankan server Minecraft
 CMD ["bash", "/start"]
