@@ -31,10 +31,11 @@ RUN echo "Listing files in /data" && ls /data && \
         echo "Extracting Imperium world..." && \
         unzip /data/Imperium.zip -d /data && \
         rm /data/Imperium.zip; \
-    fi
+    fi && \
+    echo "Listing contents of /data after extraction" && ls /data
 
 # Pastikan server.properties memiliki LEVEL-NAME yang sesuai
-RUN echo "level-name=Imperium" >> /data/server.properties
+RUN echo "level-name=Imperium" > /data/server.properties
 
 # Set entrypoint untuk menjalankan server Minecraft
 CMD ["bash", "/start"]
