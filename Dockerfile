@@ -13,14 +13,14 @@ ENV JVM_OPTS="-Dlog4j2.formatMsgNoLookups=true"
 # Set working directory
 WORKDIR /data
 
-# Menyalin file SkyFactory4.zip dari repo ke dalam container
+# Menyalin file SkyFactory-4.zip dari repo ke dalam container
 COPY SkyFactory-4.zip /data/SkyFactory-4.zip
 
 # Ekstrak file zip dan hapus file zip setelahnya
 RUN if [ ! -d "/data/mods" ]; then \
     echo "Extracting SkyFactory 4..." && \
-    unzip /data/skyfactory4.zip -d /data && \
-    rm /data/skyfactory4.zip; \
+    unzip /data/SkyFactory-4.zip -d /data && \
+    rm /data/SkyFactory-4.zip; \
     fi
 
 # Set entrypoint untuk menjalankan server Minecraft
