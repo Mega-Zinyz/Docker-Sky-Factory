@@ -13,10 +13,8 @@ ENV JVM_OPTS="-Dlog4j2.formatMsgNoLookups=true"
 # Set working directory
 WORKDIR /data
 
-# Menyalin file SkyFactory-4.zip dari repo ke dalam container
+# Menyalin file SkyFactory-4.zip dan world Imperium.zip dari repo ke dalam container
 COPY SkyFactory-4.zip /data/SkyFactory-4.zip
-
-# Menyalin world "Imperium.zip" dari repo ke dalam container
 COPY Imperium.zip /data/Imperium.zip
 
 # Ekstrak file zip dan hapus file zip setelahnya
@@ -29,6 +27,9 @@ RUN if [ ! -d "/data/mods" ]; then \
     unzip /data/Imperium.zip -d /data && \
     rm /data/Imperium.zip; \
     fi
+
+# Mengatur agar level-name di server.properties sesuai dengan nama world
+RUN sed -i 's/level-name=world/level-name=Imperium/' /data/server.properties
 
 # Set entrypoint untuk menjalankan server Minecraft
 CMD ["bash", "/start"]
