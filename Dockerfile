@@ -27,10 +27,14 @@ RUN echo "Listing files in /data" && ls /data && \
         unzip /data/SkyFactory-4.zip -d /data && \
         rm /data/SkyFactory-4.zip; \
     fi && \
-    echo "Listing contents of /data after extraction" && ls /data
+    echo "Listing contents of /data after extraction" && ls /data && \
+    echo "Listing contents of /data/Imperium" && ls /data/Imperium
 
 # Append the level-name to server.properties to set the world name
 RUN echo "level-name=Imperium" >> /data/server.properties
+
+# Check that the permissions are correct
+RUN chmod -R 755 /data/Imperium
 
 # Create a start script (if you don't have one already)
 RUN echo '#!/bin/bash\njava $JVM_OPTS -Xmx$MEMORY -Xms$MEMORY -jar forge-$FORGE_VERSION.jar nogui' > /data/start && \
