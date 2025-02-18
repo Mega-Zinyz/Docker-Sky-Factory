@@ -15,7 +15,7 @@ WORKDIR /data
 
 # Menyalin file SkyFactory-4.zip dan world Imperium.zip dari repo ke dalam container
 COPY SkyFactory-4.zip /data/SkyFactory-4.zip
-COPY Imperium.rar /data/Imperium.rar
+COPY Imperium.zip /data/Imperium.zip
 
 # Ekstrak file zip dan hapus file zip setelahnya
 RUN if [ ! -d "/data/mods" ]; then \
@@ -24,8 +24,8 @@ RUN if [ ! -d "/data/mods" ]; then \
     rm /data/SkyFactory-4.zip; \
     fi && \
     echo "Extracting Imperium world..." && \
-    unzip /data/Imperium.rar -d /data && \
-    rm /data/Imperium.rar; \
+    unzip /data/Imperium.zip -d /data && \
+    rm /data/Imperium.zip; \
     fi
 
 # Mengatur agar level-name di server.properties sesuai dengan nama world
