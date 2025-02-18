@@ -33,5 +33,8 @@ RUN echo "Listing files in /data" && ls /data && \
         rm /data/Imperium.zip; \
     fi
 
+# Pastikan server.properties memiliki LEVEL-NAME yang sesuai
+RUN echo "level-name=Imperium" >> /data/server.properties
+
 # Set entrypoint untuk menjalankan server Minecraft
 CMD ["bash", "/start"]
