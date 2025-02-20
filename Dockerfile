@@ -22,9 +22,8 @@ RUN apt-get update && \
 
 # Copy SkyFactory 5 files to the container
 ARG SKYFACTORY_VERSION=${SKYFACTORY}
-ENV SKYFACTORY_PATH=${VOLUME}
 
-COPY ${SKYFACTORY_VERSION}/ ${SKYFACTORY_PATH}
+COPY ${SKYFACTORY_VERSION}/ /data/
 
 # Debug: Print files inside container (REMOVE after debugging)
 RUN ls -l /data/manifest.json || echo "🚨 manifest.json is MISSING!"
