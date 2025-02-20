@@ -51,18 +51,16 @@ RUN if [ ! -f /data/manifest.json ]; then \
 RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/manifest.json > /data/modlist.txt && \
     while read -r projectID fileID; do \
         echo "Fetching mod: Project ID: $projectID, File ID: $fileID"; \
-        ATTEMPTS=0; \
-        until [ "$ATTEMPTS" -ge 5 ]; do \
-            FILE_URL=$(curl -s "https://api.curseforge.com/v1/mods/$projectID/files/$fileID/download-url" -H "x-api-key: $CURSEFORGE_API_KEY" | jq -r '.data'); \
-            if [ "$FILE_URL" != "null" ]; then \
-                curl -L -o "/data/mods/$fileID.jar" "$FILE_URL" && break; \
-            else \
-                echo "⚠️ Warning: Could not download mod $projectID-$fileID, retrying... ($ATTEMPTS/5)"; \
-                ATTEMPTS=$((ATTEMPTS+1)); \
-                sleep 2; \
-            fi; \
-        done; \
+        RESPONSE=$(curl -s -H "x-api-key: ${CURSEFORGE_API_KEY}" "https://api.curseforge.com/v1/mods/$projectID/files/$fileID/download-url"); \
+        echo "API Response: $RESPONSE"; \
+        FILE_URL=$(echo "$RESPONSE" | jq -r '.data'); \
+        if [[ "$FILE_URL" != "null" && "$FILE_URL" != "" ]]; then \
+            curl -L -o "/data/mods/$fileID.jar" "$FILE_URL"; \
+        else \
+            echo "⚠️ Warning: Could not download mod $projectID-$fileID"; \
+        fi; \
     done < /data/modlist.txt
+
 
 # Copy the saved world (if you already have one)
 COPY Imperium/ /data/saves/world/
