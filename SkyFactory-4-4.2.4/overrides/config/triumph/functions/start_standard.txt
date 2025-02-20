@@ -1,3 +1,0 @@
-advancement grant @p only sf4:age1/root
-function triumph:startingItems
-function triumph:forgiving_void_enable

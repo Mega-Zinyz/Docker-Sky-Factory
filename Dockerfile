@@ -1,12 +1,12 @@
 # Use itzg's Minecraft Server Docker image
-FROM itzg/minecraft-server:java8
+FROM itzg/minecraft-server:java17
 
 # Set environment variables
 ENV TYPE=FORGE
-ENV VERSION=1.12.2
-ENV MEMORY=4G
+ENV VERSION=1.20.1
+ENV MEMORY=6G
 ENV EULA=TRUE
-ENV LEVEL=Imperium
+ENV LEVEL=SkyFactory5
 ENV ONLINE_MODE=FALSE
 
 # Allow passing the API key securely
@@ -20,8 +20,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends jq curl unzip && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy SkyFactory 4 files to the container (only content is copied)
-COPY SkyFactory-4-4.2.4/ /data/
+# Copy SkyFactory 5 files to the container (only content is copied)
+COPY SkyFactory5-5.0.7/ /data/
 
 # Debug: Print files inside container (REMOVE after debugging)
 RUN ls -l /data/manifest.json || echo "🚨 manifest.json is MISSING!"
@@ -30,11 +30,11 @@ RUN ls -l /data/manifest.json || echo "🚨 manifest.json is MISSING!"
 RUN test -f /data/manifest.json || (echo "❌ ERROR: manifest.json not found!" && exit 1)
 
 # Copy overrides (configs, scripts, resources)
-COPY SkyFactory-4-4.2.4/overrides/config/ /data/config/
-COPY SkyFactory-4-4.2.4/overrides/scripts/ /data/scripts/
-COPY SkyFactory-4-4.2.4/overrides/resources/ /data/resources/
-COPY SkyFactory-4-4.2.4/overrides/fontfiles/ /data/fontfiles/
-COPY SkyFactory-4-4.2.4/overrides/oresources/ /data/oresources/
+COPY SkyFactory5-5.0.7/overrides/config/ /data/config/
+COPY SkyFactory5-5.0.7/overrides/scripts/ /data/scripts/
+COPY SkyFactory5-5.0.7/overrides/resources/ /data/resources/
+COPY SkyFactory5-5.0.7/overrides/fontfiles/ /data/fontfiles/
+COPY SkyFactory5-5.0.7/overrides/oresources/ /data/oresources/
 
 # Create the mods folder
 RUN mkdir -p /data/mods
@@ -62,9 +62,6 @@ RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/manifest.json > /data/mo
         fi; \
     done < /data/modlist.txt
 
-# Copy the saved world (if you already have one)
-COPY Imperium/ /data/saves/world/
-
 # ✅ Only copy StartServer.sh if it exists (since it's directly in /data now)
 RUN if [ -f "/data/StartServer.sh" ]; then \
         echo "✅ StartServer.sh found"; \
@@ -82,5 +79,5 @@ RUN if [ -f /data/StartServer.sh ]; then chmod +x /data/StartServer.sh; else ech
 # Expose ports for Minecraft and RCON
 EXPOSE 25565 25575
 
-# Run the SkyFactory 4 start script instead of manually running Forge
+# Run the SkyFactory start script instead of manually running Forge
 CMD ["/bin/bash", "/data/StartServer.sh"]
