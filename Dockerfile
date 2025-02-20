@@ -21,7 +21,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy SkyFactory 5 files to the container
-ARG SKYFACTORY_VERSION=${VERSION}
+ARG SKYFACTORY_VERSION=${SKYFACTORY}
 ENV SKYFACTORY_PATH=${VOLUME}
 
 COPY ${SKYFACTORY_VERSION}/ ${SKYFACTORY_PATH}
