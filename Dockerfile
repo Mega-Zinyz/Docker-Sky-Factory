@@ -11,8 +11,8 @@ ENV ONLINE_MODE=FALSE
 
 WORKDIR /data
 
-# Install jq and curl to parse manifest.json
-RUN apt-get update && apt-get install -y jq curl
+# Install jq and curl to parse manifest.json and download mods
+RUN apt-get update && apt-get install -y jq curl unzip
 
 # Copy SkyFactory 4 files to the container
 COPY SkyFactory-4-4.2.4/ /data/
@@ -27,16 +27,23 @@ COPY SkyFactory-4-4.2.4/overrides/oresources/ /data/oresources/
 # Create the mods folder
 RUN mkdir -p /data/mods
 
-# Download mods based on manifest.json
-RUN cat /data/SkyFactory-4-4.2.4/manifest.json | \
-    jq -r '.files[] | "\(.projectID)-\(.fileID)"' > /data/modlist.txt && \
-    while IFS=- read -r projectID fileID; do \
-        echo "Downloading mod: $projectID-$fileID"; \
-        curl -o "/data/mods/$fileID.jar" "https://media.forgecdn.net/files/${fileID:0:4}/${fileID:4}/mod.jar"; \
+# ✅ Download mods from CurseForge API (fixing your issue)
+RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/SkyFactory-4-4.2.4/manifest.json > /data/modlist.txt && \
+    while read -r projectID fileID; do \
+        echo "Fetching mod: Project ID: $projectID, File ID: $fileID"; \
+        FILE_URL=$(curl -s "https://api.curseforge.com/v1/mods/$projectID/files/$fileID/download-url" -H "x-api-key: YOUR_CURSEFORGE_API_KEY" | jq -r '.data'); \
+        if [ "$FILE_URL" != "null" ]; then \
+            curl -L -o "/data/mods/$fileID.jar" "$FILE_URL"; \
+        else \
+            echo "⚠️ Warning: Could not download mod $projectID-$fileID"; \
+        fi; \
     done < /data/modlist.txt
 
 # Copy the saved world (if you already have one)
 COPY Imperium/ /data/saves/Imperium/
+
+# ✅ Copy StartServer.sh explicitly (if it's included)
+COPY SkyFactory-4-4.2.4/StartServer.sh /data/StartServer.sh
 
 # Ensure correct permissions
 RUN chmod -R 755 /data && \
