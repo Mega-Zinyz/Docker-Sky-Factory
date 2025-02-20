@@ -44,9 +44,7 @@ RUN if [ ! -f /data/manifest.json ]; then \
 RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/manifest.json > /data/modlist.txt && \
     while read -r projectID fileID; do \
         echo "Fetching mod: Project ID: $projectID, File ID: $fileID"; \
-        RESPONSE=$(curl -s -H "x-api-key: ${CURSEFORGE_API_KEY}" "https://www.curseforge.com/api/v1/mods/$projectID/files/$fileID/download"); \
-        echo "API Response for $projectID-$fileID: $RESPONSE"; \
-        FILE_URL=$(echo "$RESPONSE" | jq -r '.data'); \
+        FILE_URL=$(curl -s -H "x-api-key: ${CURSEFORGE_API_KEY}" -w "%{redirect_url}" -o /dev/null "https://www.curseforge.com/api/v1/mods/$projectID/files/$fileID/download"); \
         if [ "$FILE_URL" != "null" ] && [ "$FILE_URL" != "" ]; then \
             echo "Downloading from $FILE_URL"; \
             curl -L -o "/data/mods/$fileID.jar" "$FILE_URL"; \
@@ -54,6 +52,7 @@ RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/manifest.json > /data/mo
             echo "⚠️ Warning: Could not download mod $projectID-$fileID"; \
         fi; \
     done < /data/modlist.txt
+
 
 # ✅ Only copy StartServer.sh if it exists (since it's directly in /data now)
 RUN if [ -f "/data/StartServer.sh" ]; then \
