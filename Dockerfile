@@ -10,16 +10,18 @@ ENV ONLINE_MODE=FALSE
 
 WORKDIR /data
 
-# Copy the extracted SkyFactory 4 files into the container
+# Copy the extracted SkyFactory 4 modpack into the container
 COPY SkyFactory-4-4.2.4/ /data/
 
-# Move the world save into the correct location
+# Move the world save into the correct directory
 COPY Imperium/ /data/saves/Imperium/
 
-# Ensure the start script and world folder have the correct permissions
-RUN if [ -f "/data/StartServer.sh" ]; then chmod +x /data/StartServer.sh; fi && \
-    chmod -R 755 /data && \
+# Ensure correct permissions
+RUN chmod -R 755 /data && \
     chown -R 1000:1000 /data
 
-# Set the entrypoint to run the modpack’s startup script
+# Make sure server.properties has the correct level name
+RUN echo "level-name=Imperium" > /data/server.properties
+
+# Start the server
 CMD ["bash", "/data/StartServer.sh"]
