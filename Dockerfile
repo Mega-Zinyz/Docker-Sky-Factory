@@ -45,7 +45,7 @@ RUN if [ ! -f /data/manifest.json ]; then \
     fi
 
 # ✅ Download mods from CurseForge API with debugging
-RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/SkyFactory-4-4.2.4/manifest.json | tee /data/modlist.txt && \
+RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/manifest.json | tee /data/modlist.txt && \
     while read -r projectID fileID; do \
         echo "🔹 Fetching mod: Project ID: $projectID, File ID: $fileID"; \
         FILE_URL=$(curl -s "https://api.curseforge.com/v1/mods/$projectID/files/$fileID/download-url" -H "x-api-key: $CURSEFORGE_API_KEY" | jq -r '.data'); \
@@ -61,8 +61,8 @@ RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/SkyFactory-4-4.2.4/manif
 COPY Imperium/ /data/saves/world/
 
 # ✅ Only copy StartServer.sh if it exists
-RUN if [ -f "/data/SkyFactory-4-4.2.4/StartServer.sh" ]; then \
-        cp /data/SkyFactory-4-4.2.4/StartServer.sh /data/StartServer.sh; \
+RUN if [ -f "/data/StartServer.sh" ]; then \
+        cp /data/StartServer.sh /data/StartServer.sh; \
     else \
         echo "⚠️ Warning: StartServer.sh not found"; \
     fi
