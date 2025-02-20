@@ -1,5 +1,0 @@
-{
-  "type": "immersiveengineering:hammer_crushing",
-  "input": { "tag": "forge:ores/iron" },
-  "result": { "item": "thermal:iron_dust" }
-}

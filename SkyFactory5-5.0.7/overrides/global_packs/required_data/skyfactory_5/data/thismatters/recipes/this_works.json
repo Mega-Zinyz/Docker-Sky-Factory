@@ -1,9 +1,0 @@
-{
-  "type": "thismatters:matter_recipe",
-  "ingredients": [
-    {
-      "item": "minecraft:blue_dye"
-    }
-  ],
-  "matter": 10
-}

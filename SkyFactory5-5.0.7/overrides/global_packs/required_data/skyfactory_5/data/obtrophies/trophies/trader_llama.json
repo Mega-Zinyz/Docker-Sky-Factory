@@ -1,8 +1,0 @@
-{
-  "entity": "minecraft:trader_llama",
-  "behavior": {
-    "type": "obtrophies:llama_spit"
-  },
-  "offset": 0,
-  "scale": 1
-}

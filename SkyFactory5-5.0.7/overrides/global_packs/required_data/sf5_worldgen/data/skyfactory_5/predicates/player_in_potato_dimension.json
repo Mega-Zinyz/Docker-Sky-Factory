@@ -1,9 +1,0 @@
-{
-  "condition": "minecraft:entity_properties",
-  "entity": "this",
-  "predicate": {
-    "location": {
-      "dimension": "skyfactory_5:scp_1689"
-    }
-  }
-}

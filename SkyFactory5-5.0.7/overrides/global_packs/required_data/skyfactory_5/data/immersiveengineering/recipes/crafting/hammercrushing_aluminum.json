@@ -1,9 +1,0 @@
-{
-  "type": "immersiveengineering:hammer_crushing",
-  "input": {
-    "tag": "forge:ores/aluminum"
-  },
-  "result": {
-    "item": "immersiveengineering:dust_aluminum"
-  }
-}

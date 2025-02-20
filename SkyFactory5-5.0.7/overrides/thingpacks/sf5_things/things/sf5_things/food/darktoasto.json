@@ -1,8 +1,0 @@
-{
-  "nutrition": 5,
-  "saturation": 1.5,
-  "meat": false,
-  "fast": false,
-  "always_eat": false,
-  "effects": []
-}

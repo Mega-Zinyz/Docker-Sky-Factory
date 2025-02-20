@@ -1,5 +1,0 @@
-["TOP Integration"]
-# Enables The One Probe Integration for Ex Nihilo Sequentia
-enableExNihiloSequentiaIntegration = true
-# Enables The One Probe Integration for Cyclic
-enableCyclicIntegration = true

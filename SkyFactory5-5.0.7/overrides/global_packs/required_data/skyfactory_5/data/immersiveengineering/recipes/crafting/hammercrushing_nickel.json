@@ -1,5 +1,0 @@
-{
-  "type": "immersiveengineering:hammer_crushing",
-  "input": { "tag": "forge:ores/nickel" },
-  "result": { "item": "thermal:nickel_dust" }
-}

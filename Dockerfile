@@ -21,7 +21,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy SkyFactory 5 files to the container
-COPY SkyFactory5-5.0.7/ /data/
+COPY SkyFactory4-4.2.4/ /data/
 
 # Debug: Print files inside container (REMOVE after debugging)
 RUN ls -l /data/manifest.json || echo "🚨 manifest.json is MISSING!"
@@ -111,4 +111,4 @@ RUN if [ -f /data/StartServer.sh ]; then chmod +x /data/StartServer.sh; else ech
 EXPOSE 25565 25575
 
 # Run the SkyFactory start script instead of manually running Forge
-CMD ["/bin/bash", "/data/StartServer.sh"]
+CMD ["java", "-jar", "forge-1.20.1-47.3.0.jar", "nogui"]

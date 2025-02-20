@@ -1,9 +1,0 @@
-{
-  "entity": "minecraft:pillager",
-  "behavior": {
-    "type": "obtrophies:arrow",
-    "amount": 1
-  },
-  "offset": 0,
-  "scale": 1
-}

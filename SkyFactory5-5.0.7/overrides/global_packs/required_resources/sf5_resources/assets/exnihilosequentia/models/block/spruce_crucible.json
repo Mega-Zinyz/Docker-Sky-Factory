@@ -1,8 +1,0 @@
-{
-  "parent": "exnihilosequentia:block/crucible_base",
-  "render_type": "minecraft:cutout_mipped",
-  "textures": {
-    "particle": "minecraft:block/spruce_planks",
-    "texture": "exnihilosequentia:block/spruce_crucible"
-  }
-}

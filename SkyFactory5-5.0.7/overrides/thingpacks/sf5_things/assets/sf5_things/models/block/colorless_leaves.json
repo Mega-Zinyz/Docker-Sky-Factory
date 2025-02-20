@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/leaves",
-  "render_type": "cutout",
-  "textures": {
-    "all": "colouredstuff:block/leaves_none",
-    "particle": "colouredstuff:block/leaves_none"
-  }
-}
