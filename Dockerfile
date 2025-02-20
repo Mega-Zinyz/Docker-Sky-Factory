@@ -74,6 +74,25 @@ RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/manifest.json > /data/mo
         fi; \
     done < /data/modlist.txt
 
+# Verify each mod was downloaded correctly
+RUN while read -r projectID fileID; do \
+        MOD_FILE="/data/mods/$fileID.jar"; \
+        if [ -f "$MOD_FILE" ]; then \
+            echo "✅ Mod $projectID-$fileID downloaded successfully"; \
+        else \
+            echo "❌ ERROR: Mod $projectID-$fileID is missing!"; \
+        fi; \
+    done < /data/modlist.txt
+
+RUN FAIL_BUILD=0; while read -r projectID fileID; do \
+    MOD_FILE="/data/mods/$fileID.jar"; \
+    if [ ! -f "$MOD_FILE" ]; then \
+        echo "❌ ERROR: Mod $projectID-$fileID is missing!"; \
+        FAIL_BUILD=1; \
+    fi; \
+done < /data/modlist.txt; \
+if [ $FAIL_BUILD -eq 1 ]; then exit 1; fi
+
 # ✅ Only copy StartServer.sh if it exists
 RUN if [ -f "/data/StartServer.sh" ]; then \
         echo "✅ StartServer.sh found"; \
