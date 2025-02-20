@@ -17,7 +17,7 @@ COPY SkyFactory-4-4.2.4/ /data/
 COPY Imperium/ /data/saves/Imperium/
 
 # Ensure the start script and world folder have the correct permissions
-RUN chmod +x /data/StartServer.sh && \
+RUN if [ -f "/data/StartServer.sh" ]; then chmod +x /data/StartServer.sh; fi && \
     chmod -R 755 /data && \
     chown -R 1000:1000 /data
 
