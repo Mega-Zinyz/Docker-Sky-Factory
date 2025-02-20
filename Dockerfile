@@ -3,10 +3,11 @@ FROM itzg/minecraft-server:java17
 
 # Set environment variables
 ENV TYPE=FORGE
-ENV VERSION=1.20.1
+ENV VERSION=1.16.5
+ENV FORGE_VERSION=36.2.39
 ENV MEMORY=6G
 ENV EULA=TRUE
-ENV LEVEL=SkyFactory5
+ENV LEVEL=SkyFactoryOne
 ENV ONLINE_MODE=FALSE
 
 # Allow passing the API key securely
