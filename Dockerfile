@@ -40,7 +40,7 @@ COPY SkyFactory-4-4.2.4/overrides/oresources/ /data/oresources/
 RUN mkdir -p /data/mods
 
 # ✅ Ensure manifest.json exists before running jq
-RUN if [ ! -f /data/SkyFactory-4-4.2.4/manifest.json ]; then \
+RUN if [ ! -f /data/manifest.json ]; then \
         echo "❌ ERROR: manifest.json not found!"; exit 1; \
     fi
 
