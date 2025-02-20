@@ -29,13 +29,6 @@ RUN ls -l /data/manifest.json || echo "🚨 manifest.json is MISSING!"
 # ✅ Ensure manifest.json exists before proceeding
 RUN test -f /data/manifest.json || (echo "❌ ERROR: manifest.json not found!" && exit 1)
 
-# Copy overrides (configs, scripts, resources)
-COPY SkyFactory5-5.0.7/overrides/config/ /data/config/
-COPY SkyFactory5-5.0.7/overrides/scripts/ /data/scripts/
-COPY SkyFactory5-5.0.7/overrides/resources/ /data/resources/
-COPY SkyFactory5-5.0.7/overrides/fontfiles/ /data/fontfiles/
-COPY SkyFactory5-5.0.7/overrides/oresources/ /data/oresources/
-
 # Create the mods folder
 RUN mkdir -p /data/mods
 
