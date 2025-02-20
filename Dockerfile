@@ -4,7 +4,7 @@ FROM itzg/minecraft-server:java8
 # Set working directory
 WORKDIR /data
 
-# Install jq to parse manifest.json
+# Install jq and curl to parse manifest.json
 RUN apt-get update && apt-get install -y jq curl
 
 # Copy SkyFactory 4 files to the container
@@ -35,11 +35,11 @@ COPY Imperium/ /data/saves/Imperium/
 RUN chmod -R 755 /data && \
     chown -R 1000:1000 /data
 
+# ✅ Fix: Only change permissions if StartServer.sh exists
+RUN [ -f /data/StartServer.sh ] && chmod +x /data/StartServer.sh || echo "Warning: StartServer.sh not found"
+
 # Expose ports for Minecraft and RCON
 EXPOSE 25565 25575
-
-# Ensure StartServer.sh is executable
-RUN chmod +x /data/StartServer.sh
 
 # Run the SkyFactory 4 start script instead of manually running Forge
 CMD ["/bin/bash", "/data/StartServer.sh"]
