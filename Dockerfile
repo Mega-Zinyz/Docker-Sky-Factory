@@ -9,6 +9,9 @@ ENV EULA=TRUE
 ENV LEVEL=Imperium
 ENV ONLINE_MODE=FALSE
 
+# Allow passing the API key securely
+ENV CURSEFORGE_API_KEY=${CURSEFORGE_API_KEY}
+
 WORKDIR /data
 
 # ✅ Prevent memory errors while installing packages
@@ -29,11 +32,11 @@ COPY SkyFactory-4-4.2.4/overrides/oresources/ /data/oresources/
 # Create the mods folder
 RUN mkdir -p /data/mods
 
-# ✅ Download mods from CurseForge API (requires API key)
+# ✅ Download mods from CurseForge API (using an environment variable)
 RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/SkyFactory-4-4.2.4/manifest.json > /data/modlist.txt && \
     while read -r projectID fileID; do \
         echo "Fetching mod: Project ID: $projectID, File ID: $fileID"; \
-        FILE_URL=$(curl -s "https://api.curseforge.com/v1/mods/$projectID/files/$fileID/download-url" -H "x-api-key: 1ff335fa-f363-489a-985d-5f9a68fc9f16" | jq -r '.data'); \
+        FILE_URL=$(curl -s "https://api.curseforge.com/v1/mods/$projectID/files/$fileID/download-url" -H "x-api-key: $CURSEFORGE_API_KEY" | jq -r '.data'); \
         if [ "$FILE_URL" != "null" ]; then \
             curl -L -o "/data/mods/$fileID.jar" "$FILE_URL"; \
         else \
@@ -44,8 +47,8 @@ RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/SkyFactory-4-4.2.4/manif
 # Copy the saved world (if you already have one)
 COPY Imperium/ /data/saves/Imperium/
 
-# ✅ Copy StartServer.sh explicitly (if it's included)
-COPY --ignore=missing SkyFactory-4-4.2.4/StartServer.sh /data/StartServer.sh
+# ✅ Only copy StartServer.sh if it exists
+RUN if [ -f "SkyFactory-4-4.2.4/StartServer.sh" ]; then cp SkyFactory-4-4.2.4/StartServer.sh /data/StartServer.sh; else echo "Warning: StartServer.sh not found"; fi
 
 # Ensure correct permissions
 RUN chmod -R 755 /data && \
