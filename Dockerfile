@@ -1,7 +1,7 @@
 FROM ghcr.io/ftbteam/modpack-downloader:latest
 
 # Set environment variables
-ENV FTB_MODPACK_ID=93
+ENV FTB_MODPACK_ID=56
 ENV FTB_MODPACK_VERSION=latest
 ENV MEMORY=4G
 ENV EULA=TRUE
