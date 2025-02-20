@@ -1,7 +1,14 @@
 # Use itzg's Minecraft Server Docker image
 FROM itzg/minecraft-server:java8
 
-# Set working directory
+# Set environment variables
+ENV TYPE=FORGE
+ENV VERSION=1.12.2
+ENV MEMORY=4G
+ENV EULA=TRUE
+ENV LEVEL=Imperium
+ENV ONLINE_MODE=FALSE
+
 WORKDIR /data
 
 # Install jq and curl to parse manifest.json
