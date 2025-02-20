@@ -39,19 +39,22 @@ COPY SkyFactory-4-4.2.4/overrides/oresources/ /data/oresources/
 # Create the mods folder
 RUN mkdir -p /data/mods
 
+# Debug: Print API key (REMOVE after debugging)
+RUN echo "CurseForge API Key: $CURSEFORGE_API_KEY"
+
 # ✅ Ensure manifest.json exists before running jq
 RUN if [ ! -f /data/manifest.json ]; then \
         echo "❌ ERROR: manifest.json not found!"; exit 1; \
     fi
 
 # ✅ Download mods from CurseForge API with debugging
-RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/manifest.json | tee /data/modlist.txt && \
+RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/SkyFactory-4-4.2.4/manifest.json > /data/modlist.txt && \
     while read -r projectID fileID; do \
-        echo "🔹 Fetching mod: Project ID: $projectID, File ID: $fileID"; \
+        echo "Fetching mod: Project ID: $projectID, File ID: $fileID"; \
         FILE_URL=$(curl -s "https://api.curseforge.com/v1/mods/$projectID/files/$fileID/download-url" -H "x-api-key: $CURSEFORGE_API_KEY" | jq -r '.data'); \
-        if [ "$FILE_URL" != "null" ] && [ -n "$FILE_URL" ]; then \
-            echo "✅ Downloading: $FILE_URL"; \
+        if [ "$FILE_URL" != "null" ]; then \
             curl -L -o "/data/mods/$fileID.jar" "$FILE_URL"; \
+            sleep 2; \
         else \
             echo "⚠️ Warning: Could not download mod $projectID-$fileID"; \
         fi; \
