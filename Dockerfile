@@ -11,7 +11,7 @@ ENV ONLINE_MODE=FALSE
 WORKDIR /data
 
 # Copy the extracted SkyFactory 4 files into the container
-COPY SkyFactory\ 4-4.2.4/ /data/
+COPY SkyFactory-4-4.2.4/ /data/
 
 # Move the world save into the correct location
 COPY Imperium/ /data/saves/Imperium/
