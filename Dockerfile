@@ -1,5 +1,5 @@
 # Use itzg's Minecraft Server Docker image
-FROM itzg/minecraft-server:java8
+FROM itzg/minecraft-server:java11
 
 # Set environment variables
 ENV TYPE=FORGE
@@ -112,4 +112,4 @@ RUN if [ -f /data/StartServer.sh ]; then chmod +x /data/StartServer.sh; else ech
 EXPOSE 25565 25575
 
 # Run the SkyFactory start script instead of manually running Forge
-CMD ["java", "-jar", "forge-1.16.5-36.2.39.jar", "nogui"]
+CMD ["/start"]
