@@ -4,7 +4,7 @@ FROM itzg/minecraft-server:java11
 # Set environment variables
 ENV TYPE=FORGE
 ENV VERSION=1.16.5
-ENV FORGE_VERSION=36.2.39
+ENV FORGE_VERSION=36.2.34
 ENV MEMORY=6G
 ENV EULA=TRUE
 ENV LEVEL=SkyFactoryOne
