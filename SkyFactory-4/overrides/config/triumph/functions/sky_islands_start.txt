@@ -1,2 +1,0 @@
-give @p minecraft:dirt 1
-give @p sky_orchards:sapling_dirt 1
