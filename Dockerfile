@@ -20,7 +20,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends jq curl unzip && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy SkyFactory 5 files to the container (only content is copied)
+# Copy SkyFactory 5 files to the container
 COPY SkyFactory5-5.0.7/ /data/
 
 # Debug: Print files inside container (REMOVE after debugging)
@@ -40,21 +40,41 @@ RUN if [ ! -f /data/manifest.json ]; then \
         echo "❌ ERROR: manifest.json not found!"; exit 1; \
     fi
 
-# ✅ Download mods from CurseForge API with retries and debugging
+# ✅ Download mods from CurseForge API with retries and file verification
 RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/manifest.json > /data/modlist.txt && \
     while read -r projectID fileID; do \
         echo "Fetching mod: Project ID: $projectID, File ID: $fileID"; \
-        FILE_URL=$(curl -s -H "x-api-key: ${CURSEFORGE_API_KEY}" -w "%{redirect_url}" -o /dev/null "https://www.curseforge.com/api/v1/mods/$projectID/files/$fileID/download"); \
-        if [ "$FILE_URL" != "null" ] && [ "$FILE_URL" != "" ]; then \
-            echo "Downloading from $FILE_URL"; \
-            curl -L -o "/data/mods/$fileID.jar" "$FILE_URL"; \
+        mod_file="/data/mods/$fileID.jar"; \
+        if [ -f "$mod_file" ]; then \
+            echo "✅ Mod $fileID.jar already exists, skipping download."; \
         else \
-            echo "⚠️ Warning: Could not download mod $projectID-$fileID"; \
+            attempt=0; \
+            success=0; \
+            while [ $attempt -lt 3 ]; do \
+                FILE_URL=$(curl -s -H "x-api-key: ${CURSEFORGE_API_KEY}" -w "%{redirect_url}" -o /dev/null "https://www.curseforge.com/api/v1/mods/$projectID/files/$fileID/download"); \
+                if [ "$FILE_URL" != "null" ] && [ "$FILE_URL" != "" ]; then \
+                    echo "Downloading from $FILE_URL"; \
+                    curl -L -o "$mod_file" "$FILE_URL"; \
+                    if [ -f "$mod_file" ]; then \
+                        echo "✅ Successfully downloaded $fileID.jar"; \
+                        success=1; \
+                        break; \
+                    else \
+                        echo "⚠️ Download failed, retrying... ($attempt/3)"; \
+                    fi; \
+                else \
+                    echo "⚠️ Warning: Could not find download URL for mod $projectID-$fileID"; \
+                fi; \
+                attempt=$((attempt+1)); \
+                sleep 2; \
+            done; \
+            if [ $success -eq 0 ]; then \
+                echo "❌ ERROR: Failed to download mod $projectID-$fileID after 3 attempts."; \
+            fi; \
         fi; \
     done < /data/modlist.txt
 
-
-# ✅ Only copy StartServer.sh if it exists (since it's directly in /data now)
+# ✅ Only copy StartServer.sh if it exists
 RUN if [ -f "/data/StartServer.sh" ]; then \
         echo "✅ StartServer.sh found"; \
     else \
