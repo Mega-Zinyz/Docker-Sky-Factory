@@ -1,0 +1,12 @@
+##########
+# Copyright (c) 2024 Darkosto Entertainment LLC
+#
+# All rights reserved.
+##########
+
+
+#General configuration options.
+[General]
+	#Should Growth Accelerators use animated textures?
+	animatedGrowthAccelerators = true
+

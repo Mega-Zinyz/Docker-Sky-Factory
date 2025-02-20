@@ -1,0 +1,19 @@
+##########
+# Copyright (c) 2024 Darkosto Entertainment LLC
+#
+# All rights reserved.
+##########
+
+
+[Limestone]
+	#Enable/disable all limestone related blocks
+	generate = false
+
+[Basalt]
+	#Enable/disable all basalt related blocks
+	generate = false
+
+[Marble]
+	#Enable/disable all marble related blocks
+	generate = false
+

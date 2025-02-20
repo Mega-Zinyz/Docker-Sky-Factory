@@ -1,0 +1,13 @@
+##########
+# Copyright (c) 2024 Darkosto Entertainment LLC
+#
+# All rights reserved.
+##########
+
+
+#General settings
+[general]
+	#Display debug log, useful to find bugs.
+	enableDebugLog = false
+	enableVersionChecker = false
+

@@ -1,0 +1,11 @@
+##########
+# Copyright (c) 2024 Darkosto Entertainment LLC
+#
+# All rights reserved.
+##########
+
+["Drawer Fps settings"]
+	#Range at which the drawers should render their item. Default = 10 blocks
+	#Range: 1 ~ 500
+	renderRange = 32
+

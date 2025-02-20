@@ -1,0 +1,11 @@
+##########
+# Copyright (c) 2024 Darkosto Entertainment LLC
+#
+# All rights reserved.
+##########
+
+
+[general]
+	#If true, framed blocks are completely fire proof
+	fireproofBlocks = false
+

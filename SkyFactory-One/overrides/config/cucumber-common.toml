@@ -1,0 +1,12 @@
+##########
+# Copyright (c) 2024 Darkosto Entertainment LLC
+#
+# All rights reserved.
+##########
+
+
+#General configuration options.
+[General]
+	#Mod ids (in order) to prioritize using items for when generating the cucumber-tags.json file.
+	modTagPriorities = ["thermal", "tconstruct"]
+

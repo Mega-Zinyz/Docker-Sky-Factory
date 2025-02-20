@@ -1,0 +1,6 @@
+{
+  "override": "replace",
+  "generator": "simplegens:simple_pink",
+  "fuel": {"raw:item": "minecraft:pink_glazed_terracotta"},
+  "energy": 9315
+}

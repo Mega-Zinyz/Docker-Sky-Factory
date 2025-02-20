@@ -1,0 +1,6 @@
+{
+  "override": "replace",
+  "generator": "simplegens:simple_pink",
+  "fuel": {"raw:item": "minecraft:pink_concrete_powder"},
+  "energy": 9315
+}

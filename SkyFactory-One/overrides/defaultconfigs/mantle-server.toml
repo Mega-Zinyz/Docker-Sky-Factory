@@ -1,0 +1,9 @@
+##########
+# Copyright (c) 2024 Darkosto Entertainment LLC
+#
+# All rights reserved.
+##########
+
+#Preferences for outputs from tags used in automatic compat in recipes
+tagPreferences = ["minecraft", "thermalfoundation", "thermalexpansion", "tconstruct"]
+

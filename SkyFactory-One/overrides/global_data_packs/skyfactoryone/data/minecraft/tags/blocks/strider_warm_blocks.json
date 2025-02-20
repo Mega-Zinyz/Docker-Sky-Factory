@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:lava",
+    "tconstruct:magma_fluid",
+    "tconstruct:blazing_blood_fluid"
+  ]
+}

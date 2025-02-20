@@ -1,0 +1,9 @@
+##########
+# Copyright (c) 2024 Darkosto Entertainment LLC
+#
+# All rights reserved.
+##########
+
+#Should vanilla crafting recipes for seeds be generated?
+seedCraftingRecipes = false
+

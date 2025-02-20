@@ -1,0 +1,11 @@
+##########
+# Copyright (c) 2024 Darkosto Entertainment LLC
+#
+# All rights reserved.
+##########
+
+
+[TagConfig]
+	#A list of mod ids sorted by preference when getting an Item for a tag
+	ITEM_PREFERENCE = ["minecraft", "thermal", "industrialforegoing", "tconstruct"]
+

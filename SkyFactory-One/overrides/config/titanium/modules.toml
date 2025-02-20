@@ -1,0 +1,17 @@
+##########
+# Copyright (c) 2024 Darkosto Entertainment LLC
+#
+# All rights reserved.
+##########
+
+
+[modules]
+
+	#Test module for titanium features
+	[modules.test_module]
+		enabled = false
+
+	#Creative features
+	[modules.creative]
+		enabled = false
+
