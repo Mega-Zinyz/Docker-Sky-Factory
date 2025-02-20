@@ -33,12 +33,18 @@ COPY SkyFactory-4-4.2.4/overrides/oresources/ /data/oresources/
 # Create the mods folder
 RUN mkdir -p /data/mods
 
-# ✅ Download mods from CurseForge API (using an environment variable)
-RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/SkyFactory-4-4.2.4/manifest.json > /data/modlist.txt && \
+# ✅ Ensure manifest.json exists before running jq
+RUN if [ ! -f /data/SkyFactory-4-4.2.4/manifest.json ]; then \
+        echo "❌ ERROR: manifest.json not found!"; exit 1; \
+    fi
+
+# ✅ Download mods from CurseForge API with debugging
+RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/SkyFactory-4-4.2.4/manifest.json | tee /data/modlist.txt && \
     while read -r projectID fileID; do \
-        echo "Fetching mod: Project ID: $projectID, File ID: $fileID"; \
+        echo "🔹 Fetching mod: Project ID: $projectID, File ID: $fileID"; \
         FILE_URL=$(curl -s "https://api.curseforge.com/v1/mods/$projectID/files/$fileID/download-url" -H "x-api-key: $CURSEFORGE_API_KEY" | jq -r '.data'); \
-        if [ "$FILE_URL" != "null" ]; then \
+        if [ "$FILE_URL" != "null" ] && [ -n "$FILE_URL" ]; then \
+            echo "✅ Downloading: $FILE_URL"; \
             curl -L -o "/data/mods/$fileID.jar" "$FILE_URL"; \
         else \
             echo "⚠️ Warning: Could not download mod $projectID-$fileID"; \
@@ -46,17 +52,21 @@ RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/SkyFactory-4-4.2.4/manif
     done < /data/modlist.txt
 
 # Copy the saved world (if you already have one)
-COPY Imperium/ /data/saves/Imperium/
+COPY Imperium/ /data/saves/world/
 
 # ✅ Only copy StartServer.sh if it exists
-RUN if [ -f "SkyFactory-4-4.2.4/StartServer.sh" ]; then cp SkyFactory-4-4.2.4/StartServer.sh /data/StartServer.sh; else echo "Warning: StartServer.sh not found"; fi
+RUN if [ -f "/data/SkyFactory-4-4.2.4/StartServer.sh" ]; then \
+        cp /data/SkyFactory-4-4.2.4/StartServer.sh /data/StartServer.sh; \
+    else \
+        echo "⚠️ Warning: StartServer.sh not found"; \
+    fi
 
 # Ensure correct permissions
 RUN chmod -R 755 /data && \
     chown -R 1000:1000 /data
 
 # ✅ Fix: Only change permissions if StartServer.sh exists
-RUN [ -f /data/StartServer.sh ] && chmod +x /data/StartServer.sh || echo "Warning: StartServer.sh not found"
+RUN if [ -f /data/StartServer.sh ]; then chmod +x /data/StartServer.sh; else echo "⚠️ Warning: StartServer.sh not found"; fi
 
 # Expose ports for Minecraft and RCON
 EXPOSE 25565 25575
