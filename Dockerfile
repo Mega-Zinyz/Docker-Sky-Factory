@@ -52,14 +52,16 @@ RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/manifest.json > /data/mo
     while read -r projectID fileID; do \
         echo "Fetching mod: Project ID: $projectID, File ID: $fileID"; \
         RESPONSE=$(curl -s -H "x-api-key: ${CURSEFORGE_API_KEY}" "https://api.curseforge.com/v1/mods/$projectID/files/$fileID/download-url"); \
-        echo "API Response: $RESPONSE"; \
+        echo "API Response for $projectID-$fileID: $RESPONSE"; \
         FILE_URL=$(echo "$RESPONSE" | jq -r '.data'); \
         if [[ "$FILE_URL" != "null" && "$FILE_URL" != "" ]]; then \
+            echo "Downloading from $FILE_URL"; \
             curl -L -o "/data/mods/$fileID.jar" "$FILE_URL"; \
         else \
             echo "⚠️ Warning: Could not download mod $projectID-$fileID"; \
         fi; \
     done < /data/modlist.txt
+
 
 
 # Copy the saved world (if you already have one)
