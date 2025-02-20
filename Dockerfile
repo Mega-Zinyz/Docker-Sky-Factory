@@ -44,7 +44,7 @@ RUN if [ ! -f /data/manifest.json ]; then \
 RUN jq -r '.files[] | "\(.projectID) \(.fileID)"' /data/manifest.json > /data/modlist.txt && \
     while read -r projectID fileID; do \
         echo "Fetching mod: Project ID: $projectID, File ID: $fileID"; \
-        RESPONSE=$(curl -s -H "x-api-key: ${CURSEFORGE_API_KEY}" "https://api.curseforge.com/v1/mods/files/$fileID/download-url"); \
+        RESPONSE=$(curl -s -H "x-api-key: ${CURSEFORGE_API_KEY}" "https://www.curseforge.com/api/v1/mods/$projectID/files/$fileID/download"); \
         echo "API Response for $projectID-$fileID: $RESPONSE"; \
         FILE_URL=$(echo "$RESPONSE" | jq -r '.data'); \
         if [ "$FILE_URL" != "null" ] && [ "$FILE_URL" != "" ]; then \
