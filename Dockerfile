@@ -24,10 +24,10 @@ RUN apt-get update && \
 COPY SkyFactory-4-4.2.4/ /data/
 
 # Debug: Print files inside container (REMOVE after debugging)
-RUN ls -l /data/SkyFactory-4-4.2.4/manifest.json || echo "🚨 manifest.json is MISSING!"
+RUN ls -l /data/manifest.json || echo "🚨 manifest.json is MISSING!"
 
 # Ensure manifest.json exists before proceeding
-RUN test -f /data/SkyFactory-4-4.2.4/manifest.json || (echo "❌ ERROR: manifest.json not found!" && exit 1)
+RUN test -f /data/manifest.json || (echo "❌ ERROR: manifest.json not found!" && exit 1)
 
 # Copy overrides (configs, scripts, resources)
 COPY SkyFactory-4-4.2.4/overrides/config/ /data/config/
