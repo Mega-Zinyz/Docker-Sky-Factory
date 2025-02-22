@@ -21,8 +21,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends jq curl unzip && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy SkyFactory 5 files to the container
-COPY 1/ /data/
+# Copy SkyFactory files to the container
+COPY 4/ /data/
 
 # Debug: Print files inside container (REMOVE after debugging)
 RUN ls -l /data/manifest.json || echo "🚨 manifest.json is MISSING!"
